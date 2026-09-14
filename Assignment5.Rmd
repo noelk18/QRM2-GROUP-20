@@ -1,0 +1,591 @@
+---
+title: "QRM II Graded Assignment (5)"
+subtitle: "Period 1, 2026"
+author: "Fill in your group number and names here"
+date:  "`r format(Sys.Date(), '%d-%m-%Y')`"
+output:
+  pdf_document:
+    number_sections: true
+  html_document:
+    df_print: paged
+
+header-includes:
+- "\\setcounter{section}{-1}"
+- |
+  \usepackage{fvextra}
+  \DefineVerbatimEnvironment{Highlighting}{Verbatim}{
+    showspaces = false,
+    showtabs = false,
+    breaklines,
+    commandchars=\\\{\}
+  }
+format:
+  html:
+    code-overflow: wrap
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This assignment is to be completed in groups of 4-5. Further, all students in your group need to be assigned to the same R tutorial group (Friday's tutorial). You can sign yourself up for a group on Canvas. Please do so \textbf{before the start of your first R tutorial on Friday September 4th.} You can use the Discussion Board in Canvas if you do not have a group yet or if your group is incomplete.
+
+The assignment has 5 parts, and each part corresponds to the course material of that week (with the exclusion of week 6, for which there is no R programming material). 
+
+You are supposed to hand in these assignments on Canvas at the following dates:
+
+  - **Deadline 1** *Sunday September 27th, at 23:59pm*: you are supposed to hand in weeks 1, 2, and 3 of this assignment.   This will determine 18\% of your overall course grade
+  - **Deadline 2** *Sunday October 11th, at 23:59pm*: you are supposed to hand in weeks 4, and 5 of this assignment. This will determine 12\% of your overall course grade
+
+The R tutorials (each Friday) will consist of two halves. During the first half, you will discuss the tutorial exercises. These can be downloaded separately from Canvas. During the second half, you can work on this graded assignment within your own group. The purpose is that you find out how to work with R for doing statistical analyses by yourself. The tutorial exercises are meant to teach you basic commands to get you started, but to answer the problem sets in this assignment, you might need to research your own solutions, and use functions and commands not described in the tutorial exercises. Learning how to solve your own research problems is integral part of learning R. When you and your group get stuck on how to approach an exercise, the hierarchy in finding your way is as follows:
+
+-	use the concepts from the tutorial exercises;
+- use the cheat sheets available on Canvas;
+-	use Google, YouTube, StackOverflow, or another website;
+- ask the teacher.
+
+The use of generative AI is \textbf{not} permitted and may result in a grade of 0. See the AI protocol in the course manual for details.
+
+To answer the assignment, you can simply fill out this R markdown document. There are designated places which you can fill with R code. There are also designated spaces for you to answer each question. Often, the structure of an answer will be as follows. First, you type the R code in the designated box. This will show how you analyzed the data to get the answer to the question. Below the box for the R code, you will then summarize your answer to the question, i.e. what are the conclusions that you draw from the data analysis? 
+
+When handing in, you are supposed to submit this .Rmd file, and a knitted version of this document. You can knit this document to pdf, word, or html. Knitting to pdf requires you to have a .tex distribution installed on your computer. Knitting to Word requires you to have Word installed. 
+
+The exercises are designed such that you should be able to finish the majority of them during the tutorial each week. If you are not able to finish them fully during that time, you are expected to work on it in your own time using the computers on campus or your own device. It is best to meet as a group in-person when working together. If you want to work remotely, github is a good platform to guarantee smooth collaboration. Alternatively, you can email this .Rmd file back and forth to one another as a group, but this is not recommended as it is more cumbersome.
+
+We encourage you to keep your code blocks, printing statements, and final answers, as short as possible. In any case, there is a page limit of 6 pages per week, which encompasses the total length of this document which consists of the questions, your coding lines, and your answers. When your answers to questions of the respective week exceed this page limit, they will not be graded, resulting in zero points.
+
+Each week consists of 1, 2, or 3 subquestions. The total amount of points you can earn per week is 20 points. 
+
+# Week 1 
+
+1.  Find the dataset “movies4.tsv” on Canvas. Describe your data set: How many observations does it have. How many variables are there? How many subjects? What consists of a subject? \textbf{[4 points]}
+
+```{r}
+#WRITE YOUR CODE HERE
+```
+
+**Your Answer:**
+
+Write your response here.
+
+
+2. Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
+
+```{r}
+#WRITE YOUR CODE HERE
+```
+
+**Your Answer:**
+
+Write your response here.
+
+
+3. A movie studio wants to know which types of movies give maximal profit. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
+
+a. Create the variable profits as the revenue of a movie minus its budget. Report its mean, median, maximum, and minimum. \textbf{[2 points]}
+b. Which movie has the highest profits in your data set and how much are these profits. Which movie has the lowest and how much are its profits? If multiple movies have the exact same highest or lowest profits, give only one example. \textbf{[2 points]}
+c. Create a boxplot of the variable profits. Make sure it has an appropriate title, and appropriate titles and labels for the x- and y-axis. Give Q1, Q2, Q3, and Q4. What does this tell you about the nature of making money in the movies industry? \textbf{[2 points]}
+d. Add a new variable to your data set the log of profits. When creating this variable, what happens to movies for which profits is zero or negative? What then happens when you calculate the mean of log of profits? \textbf{[2 points]}
+e. For movies that have a profit of zero or less, replace log of profits with "NA". What is now the mean of log of profits? Create a boxplot for log of profits, again with an appropriate title, x- and y-axis labels. How does it compare to the boxplot you made under c.)? \textbf{[2 points]}
+f. Create a scatterplot of with the runtime of movies on the x-axis and the average vote of movies on the y-axis. What do you conclude from the scatterplot? Are movies with a longer runtime considered worse or better by the audience, or does the audience not have a preference? Why do you think this is the case? \textbf{[2 points]}  
+
+For each step, you should provide first all the code you used to answer the question and then formulate an answer using full sentences.
+
+*Step a*
+
+```{r}
+
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*Step b*
+
+```{r}
+
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*Step c*
+
+```{r}
+
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*Step d*
+
+```{r}
+
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*Step e*
+
+```{r}
+
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*Step f*
+
+```{r}
+
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+# Week 2 
+1 Is your dataset movies4.tsv the full population, or is it a sample of a larger population? If the latter, how would you describe the full population? \textbf{[4 points]}
+
+**Your Answer:**
+
+Write your formulated response here.
+
+
+2
+
+a.  For which actor in your data set do you observe the most movies? \textbf{[2 points]} 
+b.  What is the average revenue of the movie in which this actor plays and does the revenue lie above or below the revenue of an average movie according to your data set? \textbf{[2 points]}  
+c.  How trustworthy do you consider your conclusion to answer 2b? Use the term "law of large numbers" in your explanation. \textbf{[2 points]} 
+
+*step a*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step b*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step c*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+3 For this question, you will assume that your data set is the full population. 
+
+a. Recode profits such that it is expressed in millions. What is the variance of the variable profits (in millions) in your data set? \textbf{[2 points]}
+b. Create a new data set, called movies_sample. Make sure that it is a random sample of your data set of 25 movies. What is the variance of profits in this random sample? How does it compare to the variance of profits in 2a? \textbf{[2 points]}
+c. In a for loop, create 100 different samples of 25 movies, as in b, and estimate the variance within each sample. Save the variance of each sample in a vector called sample_vars. So the first position of the vector would have the variance of the first sample, the second position the variance of the second sample, etc. Print the start of this vector. \textbf{[2 points]}
+d. Summarize and make a histogram of sample_vars. What is the mean, standard deviation and shape of its distribution? \textbf{[2 points]}
+e. In your opinion, is a sample of 25 movies sufficient to get a reliable estimate of the population variance of profits, using the sample variance? Explain? \textbf{[2 points]}
+
+*step a*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step b*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step c*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step d*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step e*
+
+**Your Answer:**
+
+Write your formulated response here.
+
+**Your answer here**
+
+# Week 3 
+
+For the next part of the assignment, assume that the movies in your data frame are a random sample of a larger population of movies. 
+
+1
+
+a. Create a new data set that only includes movies that are of the genre "Thriller". For these thriller movies, give a 99 percent confidence interval for the variable *runtime*. Interpret the result. \textbf{[2 points]}
+b. Now, assume that the variance of *runtime* amongst thriller movies in your data is exactly the same as the variance of *runtime* in the population. Under this assumption, give a 99 percent confidence interval for the variable *runtime* among thriller movies. Interpret the result. Is you confidence interval wider or less wide than the one you found under question 1a? Why is that the case? \textbf{[2 points]}
+
+*step a*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step b*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+
+2
+
+a. Using an appropriate five-step procedure, set up a test for the null hypothesis that the variance of runtime equals $500$. Clearly state your null hypothesis, alternative hypothesis your test statistic, your critical value, and your conclusion. \textbf{[2 points]}
+b. For the validity of your test in 2a, what assumption about the distribution of revenue needs to hold? Make an appropriate plot to test this assumption. What do you conclude? \textbf{[2 points]}
+
+*step a*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step b*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+3. There is an argument going on in the movie studio. *Bob* claims that they should make higher-quality movies, as this will bring in more profits. *Chantal* disagrees. She tells Bob that mediocre movies bring in the most profits. You are asked to advise on who is right.
+
+a. Create a new variable called vote_average_rounded. Make sure this variable is the same as vote_average, but without any decimals (i.e., a 6.3 becomes a 6, a 8.7 an 8, etc.). Display a histogram of vote_average_rounded. \textbf{[2 points]}
+b. Create a scatter plot with vote_average_rounded on the x axis and the mean of profits within each category of vote_average_rounded on the y-axis. Make sure it has an appropriate title, and appropriate titles and labels for the x- and y-axis. At which rating of movies are profits the highest? \textbf{[3 points]}
+c. Recreate the scatter plot with year on the x axis and mean_profits on the y-axis, but now add bars around each point, indicating the 95\% confidence interval. \textbf{[3 points]}
+d. Write an advice to settle the argument between Bob and Chantal. \textbf{[4 points]}
+
+*step a*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step b*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step c*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step d*
+
+**Your Answer:**
+
+Write your formulated response here.
+
+# Week 4 
+
+1. There is another argument going on in the movie studio. *Bob* claims that production budgets are getting out of hand, and that the studio should focus on making cheaper movies. *Chantal* disagrees. She tells Bob that ``Every dollar we spend on movie production is more than offset by the increase in movie profits''. 
+
+a. Set up a regression model to test Chantal's claim, and estimate it. That is, estimate: $$\text{Profits}_i=\beta_0+\beta_1 \text{Budget}_i +\varepsilon_i.$$ Print a summary of your estimated model. \textbf{[2 points]}
+b. What is the estimated value of $\beta_1$ and how do you interpet it? \textbf{[2 points]}
+c. Test for the null hypothesis that $\beta_1 \geq 0$. Report the p-value and state your conclusion. \textbf{[2 points]} 
+d. Next, estimate the model $$\text{Log Profits}_i=\beta_0+\beta_1 \text{Log Budget}_i +\varepsilon_i.$$ When creating the variables Log Profits and Log Budget, make sure that movies with a Revenue or Budget of zero are assigned the value "NA". Print a summary of your estimated model \textbf{[2 points]}
+e. What is the estimated value of $\beta_1$ and how do you interpet it? \textbf{[2 points]}
+f. Which model has better fit? The level-level model or the log-log model? Explain. \textbf{[2 points]}
+g. Who do you think is correct? Bob or Chantal? What would you advise the movie studio to do? \textbf{[2 points]}
+
+*step a*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step b*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step c*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step d*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step e*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step f*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step g*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+2
+
+a. Make a plot with a 95% confidence interval with the mean log of budget on the y-axis, and whether the first actor of the movie is male or female on the x-axis. What do you conclude? \textbf{[2 points]} 
+b. Estimate the following simple OLS model: $log(budget)_i=\beta_0+\beta_1 \text(FirstActorMale)_i + \varepsilon_i.$ Is the estimated coefficient for $\beta_1$ significantly different from zero? How do you interpret its estimate, and how does this relate to your conclusion in 2a? \textbf{[2 points]}
+c. Now, have a close look at your data frame. Can you find any instances of male first actors who are wrongly labeled as being female, or vice versa? What would such mislabelling mean for the coefficient you estimated under 2b? \textbf{[2 points]}
+
+*step a*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step b*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step c*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+# Week 5
+
+a. Create a plot of the mean profits by month of release. Do you see any indication that month of release matters to the profits of the movie? \textbf{[2 points]}
+b. Estimate an OLS model which has as dependent variable the log of profits of a movie, and as independent variable the log of budget, a dummy for whether the movie was released in english or not, and a linear term for the month of release. Show a summary of the resulting model and interpret each coefficient. \textbf{[4 points]}
+c. Test for the hypothesis that the coefficient that belongs to month of release is zero. \textbf{[2 points]} 
+d. Based on your plot in a.) do you consider the choice that month of release enters the model linearly under b.) reasonable? Estimate a specification that allows for a more flexible curve. In this new specification, test for the null hypothesis that month of release does not impact profits. This might require testing multiple terms at once. \textbf{[4 points]}
+
+e. One executive at the studio wants to time the release of the movie to a specific month of the year such that they can maximize revenue. Based on your model under d.), What would you advise the movie studio regarding the timing of the release of the movie?  \textbf{[2 points]}
+
+The movie studio that you work at is releasing a new movie in 2026. It will be an English-spoken Thriller movie with a budget of 40,000,0000. 
+
+f. Estimate a model that is able to predict the revenue of this movie. Give its predicted revenue and include a 99% prediction interval.  \textbf{[6 points]}
+
+
+*step a*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step b*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step c*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step d*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step e*
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
+**Your Answer:**
+
+Write your formulated response here.
+
+*step f*
+
+
+```{r}
+#WRITE YOUR CODE HERE
+
+```
+
