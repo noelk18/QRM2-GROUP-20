@@ -4,11 +4,10 @@ subtitle: "Period 1, 2026"
 author: "Fill in your group number and names here"
 date:  "`r format(Sys.Date(), '%d-%m-%Y')`"
 output:
-  pdf_document:
-    number_sections: true
   html_document:
     df_print: paged
-
+  pdf_document:
+    number_sections: true
 header-includes:
 - "\\setcounter{section}{-1}"
 - |
@@ -18,7 +17,6 @@ header-includes:
     showtabs = false,
     breaklines,
     commandchars=\\\{\}
-  }
 format:
   html:
     code-overflow: wrap
@@ -26,6 +24,13 @@ format:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(jsonlite)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+
+movies<-read_tsv("movies4.tsv")
+
 ```
 
 # Introduction
@@ -170,7 +175,9 @@ Write your formulated response here.
 
 **Your Answer:**
 
-Write your formulated response here.
+It is the sample of a larger population. This data set consists primarily of widely distributed, mostly
+mainstream English-language and major international commercial movies. The full population would represent
+all commercially distributed movies throughout cinematic history.
 
 
 2
@@ -182,35 +189,55 @@ c.  How trustworthy do you consider your conclusion to answer 2b? Use the term "
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+top_actor_summary <- movies %>%
+  filter(!is.na(first_actor)) %>%
+  count(first_actor, sort = TRUE)
+
+top_actor_name <- top_actor_summary$first_actor[1]
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+With 9 movies, Bruce Willis is the actor with the most movies in the data set.
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+avg_bruce<- movies %>% 
+  filter(first_actor=="Bruce Willis" & revenue > 0) %>% 
+  summarise( avg_rev = mean(revenue), na.rm=T) %>% 
+  pull(avg_rev)
+
+avg_rev_ovr<-mean(movies$revenue, na.rm=T)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Bruce Willis has an average revenue of $255,7 million in his movies in this data set, lying over the overall
+average of the population of $82,7 million.a
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+bruce_stats <- movies %>%
+  filter(first_actor == "Bruce Willis" & revenue > 0 & !is.na(revenue)) %>%
+  summarise(
+    sample_size = n(),
+    mean_revenue = mean(revenue),
+    sd_revenue = sd(revenue))
+
+print(bruce_stats)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The conclusion is not trustworthy due to the very small sample size and extreme variance. 
+According to the law of large numbers, as a sample size becomes larger, the sample mean converges closer to the true population mean. In the filtered dataset, it is only possible to observe a sample size of 9 movies where Bruce Willis is listed as the "first_actor". Because the standard deviation ($245 million) is nearly as large as the sample mean ($255 million), individual blockbuster outliers impact the average heavily. While the sample mean is large enough that Bruce Willis' average likely remains above the overall dataset average ($82.7 million), 9 is far too small for the law of large numbers to ensure that this sample mean is an accurate estimate of his true career population average.
 
 3 For this question, you will assume that your data set is the full population. 
 
@@ -223,52 +250,92 @@ e. In your opinion, is a sample of 25 movies sufficient to get a reliable estima
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+movies<- movies %>% 
+  mutate( profit = (revenue - budget) / 1000000)
+
+pop_var_profit<- var(movies$profit, na.rm=T) * ((nrow(movies)-1)/nrow(movies))
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+After recoding profits to millions, the variance of profit_millions in the full dataset is approximately $20.245,47, depending on exact dataset row counts and handling of zero values).
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+set.seed(9849)
+
+movies_sample <- movies %>%
+  filter(!is.na(profit)) %>%
+  slice_sample(n = 25)
+
+sample_var_profit <- var(movies_sample$profit)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Due to sampling variability, the variance in a single small sample of 25 movies can differ substantially from the population variance found in 3a. Depending on whether high-budget blockbusters or major box-office flops were randomly selected into this specific sample, the sample variance could be significantly higher or lower than the overall population variance. In this case it was $17.408, lower than the population variance.
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+set.seed(9849)
+
+n_simulations <- 100
+sample_vars <- numeric(n_simulations)
+
+for (i in 1:n_simulations) {
+  current_sample <- movies %>% slice_sample(n = 25)
+  sample_vars[i] <- var(current_sample$profit)
+}
+
+head(sample_vars)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The first few values of sample_vars display noticeable variation across iterations, 
+showing how much sample variance fluctuates from one random sample of 25 movies to another.
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
+mean_sample_vars<-mean(sample_vars)
+sd_sample_vars<-sd(sample_vars)
+
+hist(sample_vars,
+     main="Distribution of Sample Variances (n=25)",
+     xlab="Sample Variance of Profits(millions)"
+     )
+
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Across our 100 random samples, the mean of the sample variances sits around 19340, but the standard deviation is huge at roughly 18590.
+
+Looking at the histogram, the distribution is heavily skewed to the right. Most samples give a pretty modest variance, but sometimes a sample happens to draw a couple of massive blockbusters, which spikes that sample's variance way out to the right and creates a long tail.
 
 *step e*
 
 **Your Answer:**
 
-Write your formulated response here.
+No, a sample size of 25 movies really isn't enough to get a reliable estimate of 
+the population variance.
+
+First off, our results from step 3d show that the sample variances swing wildly 
+from one sample to the next—the standard deviation of those variances is huge.
+
+The main issue is how heavily right-skewed box office data is. Movies have extreme 
+outliers, like massive blockbusters or high-budget flops. So even though sample variance is technically an unbiased estimator on average, any single random sample of 25 movies is just too small to give you a trustworthy estimate of the true population variance.
 
 **Your answer here**
 
