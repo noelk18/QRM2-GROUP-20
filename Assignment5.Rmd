@@ -211,7 +211,7 @@ avg_bruce<- movies %>%
   pull(avg_rev)
 
 avg_rev_ovr<-mean(movies$revenue, na.rm=T)
-
+cc
 ```
 
 **Your Answer:**
