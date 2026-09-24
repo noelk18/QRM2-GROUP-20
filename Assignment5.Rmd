@@ -211,7 +211,7 @@ avg_bruce<- movies %>%
   pull(avg_rev)
 
 avg_rev_ovr<-mean(movies$revenue, na.rm=T)
-cc
+
 ```
 
 **Your Answer:**
@@ -352,6 +352,12 @@ b. Now, assume that the variance of *runtime* amongst thriller movies in your da
 
 ```{r}
 #WRITE YOUR CODE HERE
+thriller<-movies%>% 
+  filter(genre=="Thriller")
+
+t1<-t.test(thriller$runtime,conf.level=0.99)
+
+print (t1$conf.int)
 
 
 ```
