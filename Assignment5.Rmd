@@ -370,8 +370,17 @@ Write your formulated response here.
 
 ```{r}
 #WRITE YOUR CODE HERE
+mean_runtime<-mean(thriller$runtime)
+sigma<-sd(thriller$runtime)
+n<-length(thriller$runtime)
 
+z_a2<-qnorm(0.995)
+error<-z_a2*sigma/sqrt(n)
 
+LOW<-mean_runtime-error
+UP<-mean_runtime+error
+
+print(c(LOW,UP))
 ```
 
 **Your Answer:**
