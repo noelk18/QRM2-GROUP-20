@@ -397,7 +397,16 @@ b. For the validity of your test in 2a, what assumption about the distribution o
 
 ```{r}
 #WRITE YOUR CODE HERE
+s2<-var(thriller$runtime)
+h0<-500
+df<-length(thriller$runtime)-1
+chisq<-df*s2/h0
 
+chi_low<-qchisq(0.025,df)
+chi_high<-qchisq(0.975,df)
+
+print(chisq)
+print(c(chi_low,chi_high))
 
 ```
 
@@ -409,7 +418,9 @@ Write your formulated response here.
 
 ```{r}
 #WRITE YOUR CODE HERE
-
+hist(thriller$runtime,
+     main="Distribution of Thriller Runtime",
+     xlab="Runtime")
 
 ```
 
@@ -428,7 +439,12 @@ d. Write an advice to settle the argument between Bob and Chantal. \textbf{[4 po
 
 ```{r}
 #WRITE YOUR CODE HERE
+ movies<-movies%>%
+  mutate(vote_average_rounded=floor(vote_average))
 
+hist(movies$vote_average_rounded,
+     main="Distribution of Rounded Movie Ratings",
+     xlab="Rounded Vote Average")
 
 ```
 
@@ -440,7 +456,17 @@ Write your formulated response here.
 
 ```{r}
 #WRITE YOUR CODE HERE
+movies<-movies%>%
+  mutate(profit=(revenue-budget))
 
+mean_profits<-tapply(movies$profit,
+                     movies$vote_average_rounded,mean,na.rm=TRUE)
+print(mean_profits)
+
+plot(mean_profits,
+     main="Mean Profit by Movie Rating",
+     xlab="Rounded Vote Average",
+     ylab="Mean Profit")
 
 ```
 
@@ -452,7 +478,33 @@ Write your formulated response here.
 
 ```{r}
 #WRITE YOUR CODE HERE
+mean_profits<-tapply(movies$profit,
+                     movies$release_year,
+                     mean,
+                     na.rm=TRUE)
+years<-sort(unique(movies$release_year))
 
+lower<-c()
+upper<-c()
+for(i in 1:length(years)){
+  profits<-movies$profit[movies$release_year==years[i]]
+  profits<-profits[!is.na(profits)]
+  t1<-t.test(profits)
+  lower[i]<-t1$conf.int[1]
+  upper[i]<-t1$conf.int[2]
+}
+
+plot(years,
+     mean_profits,
+     main="Mean Movie Profit by Year",
+     xlab="Release Year",
+     ylab="Mean Profit")
+
+arrows(years,lower,
+       years,upper,
+       angle=90,
+       code=3,
+       length=0.05)
 
 ```
 
