@@ -1,14 +1,15 @@
 ---
 title: "QRM II Graded Assignment (5)"
-subtitle: "Period 1, 2026"
-author: "Group-20 -- 
-Stefan Rares Ratiu, Iann Soffried, Noel Kona, Sofia Tataryn, Hashim Aburumman  "
-date:  "`r format(Sys.Date(), '%d-%m-%Y')`"
+author: "Group-20, -- Stefan Rares Ratiu, Iann Soffried, Noel Kona, Sofia Tataryn,
+  Hashim Aburumman"
+date: "`r format(Sys.Date(), '%d-%m-%Y')`"
 output:
+  word_document: default
   html_document:
     df_print: paged
   pdf_document:
     number_sections: true
+subtitle: Period 1, 2026
 header-includes:
 - "\\setcounter{section}{-1}"
 - |
