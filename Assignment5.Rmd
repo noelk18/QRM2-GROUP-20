@@ -1,7 +1,8 @@
 ---
 title: "QRM II Graded Assignment (5)"
 subtitle: "Period 1, 2026"
-author: "Group-20"
+author: "Group-20 -- 
+Stefan Rares Ratiu, Iann Soffried, Noel Kona, Sofia Tataryn, Hashim Aburumman  "
 date:  "`r format(Sys.Date(), '%d-%m-%Y')`"
 output:
   html_document:
@@ -68,7 +69,7 @@ Each week consists of 1, 2, or 3 subquestions. The total amount of points you ca
 1.  Find the dataset “movies4.tsv” on Canvas. Describe your data set: How many observations does it have. How many variables are there? How many subjects? What consists of a subject? \textbf{[4 points]}
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 movies <- read.csv("movies4.tsv", sep = "\t")
 dim(movies)
 length(unique(movies$title))
@@ -83,7 +84,7 @@ The data set has 808 observations and 19 variables, such as budget, popularity, 
 2. Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 str(movies)
 
 ```
@@ -108,8 +109,8 @@ For each step, you should provide first all the code you used to answer the ques
 
 ```{r}
 
-moviesprofits<-moviesrevenue - movies$budget
-summary(movies$profits)
+moviesprofits<-movies$revenue - movies$budget
+summary(moviesprofits)
 
 
 ```
@@ -122,8 +123,13 @@ The mean profit is 52885669, which is around 52.9 million, and the median profit
 
 ```{r}
 
-movies[moviesprofits==max(moviesprofits), c("title","profits")]
-movies[moviesprofits==min(moviesprofits), c("title","profits")]
+movieprofits<-movies$revenue-movies$budget
+
+movies$title[movieprofits == max(movieprofits)]
+max(movieprofits)
+
+movies$title[movieprofits == min(movieprofits)]
+min(movieprofits)
 
 ```
 
@@ -139,7 +145,7 @@ ggplot(movies, aes(y = profits / 1000000)) +
   geom_boxplot() + 
   labs(title = "Boxplot of profits for the movies",
        x = "All movies" , y = "Profits")
-quantile(movies$profits)
+quantile(moviesprofits)
 
 ```
 
@@ -152,7 +158,7 @@ The quartiles of profits are Q1 = -1849854, Q2/median = 0, Q3 = 49711134, and Q4
 ```{r}
 
 movieslogprofits<-log(moviesprofits)
-mean(movies$log_profits)
+mean(movieslogprofits)
 
 ```
 
@@ -165,7 +171,9 @@ For the movies with a 0 profit it returns -Infinity, because log(0) goes to -inf
 ```{r}
 
 movieslogprofits[moviesprofits <= 0] <- NA
-mean(movies$log_profits, na.rm = TRUE)
+mean(movieslogprofits, na.rm = TRUE)
+
+
 ggplot(movies, aes( y = log_profits)) + 
   geom_boxplot() + 
   labs(title = "Boxplot of log of movie profits",
@@ -186,7 +194,7 @@ ggplot(movies, aes(x = runtime, y = vote_average)) +
   geom_smooth(method = "lm") + 
   labs(title = "Runtime vs. average vote of movies",
        x = "Runtime (minutes)", y = "Average vote (0-10)")
-cor(moviesruntime,moviesvote_average)
+cor(movies$runtime,movies$vote_average)
 
 ```
 
