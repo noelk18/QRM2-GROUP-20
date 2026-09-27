@@ -1,7 +1,7 @@
 ---
 title: "QRM II Graded Assignment (5)"
 subtitle: "Period 1, 2026"
-author: "Fill in your group number and names here"
+author: "Group-20"
 date:  "`r format(Sys.Date(), '%d-%m-%Y')`"
 output:
   html_document:
@@ -69,22 +69,28 @@ Each week consists of 1, 2, or 3 subquestions. The total amount of points you ca
 
 ```{r}
 #WRITE YOUR CODE HERE
+movies <- read.csv("movies4.tsv", sep = "\t")
+dim(movies)
+length(unique(movies$title))
+
 ```
 
 **Your Answer:**
 
-Write your response here.
+The data set has 808 observations and 19 variables, such as budget, popularity, genre, runtime etc. There are 808 subjects and one subject is a movie. Every title appears only once, so each row is a different movie, and this is why the number of observations is equal to subjects.
 
 
 2. Which of the following types of variables are present in your data set? (i) nominal; (ii) ordinal; (iii); interval; (iv) ratio. If present, name one example of such a variable present in your data set. \textbf{[4 points]}
 
 ```{r}
 #WRITE YOUR CODE HERE
+str(movies)
+
 ```
 
 **Your Answer:**
 
-Write your response here.
+All four types of variables are present in the data set. The firs type is nominal, where genre is included in this variable type. The second type is ordinal, where vote_average is included in this variable type. The third is interval, where release_year is included in this variable type. The fourth is ratio, where budget is included in this variable type.
 
 
 3. A movie studio wants to know which types of movies give maximal profit. Perform the following steps to provide the movie studio with an analysis which corresponds to their request:
@@ -102,73 +108,92 @@ For each step, you should provide first all the code you used to answer the ques
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+moviesprofits<-moviesrevenue - movies$budget
+summary(movies$profits)
+
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The mean profit is 52885669, which is around 52.9 million, and the median profit is 0. The highest profit or the maximum is 1299557910, which is around 1.3 billion, and the lowest or the minimum is -150000000, which is a loss of 150 million. Th mean is far above the median, so profits are right-skewed, which means that a few hits pull the average or mean up. The median is 0 because some of the movies have both a budget and revenue of 0, which probably means the data is missing.
 
 *Step b*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+movies[moviesprofits==max(moviesprofits), c("title","profits")]
+movies[moviesprofits==min(moviesprofits), c("title","profits")]
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The movie with the highest profit is The Avengers, with 1299557910, which is around 1.3 billion. The movie with the lowest profit is The Wolfman, with -150000000, which is a loss of 150 million. The Wolfman has the lowest profit because the revenue is recorded as 0 and the the budget is 150 million, so the revenue may be missing from the data.
 
 *Step c*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+ggplot(movies, aes(y = profits / 1000000)) + 
+  geom_boxplot() + 
+  labs(title = "Boxplot of profits for the movies",
+       x = "All movies" , y = "Profits")
+quantile(movies$profits)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The quartiles of profits are Q1 = -1849854, Q2/median = 0, Q3 = 49711134, and Q4/maximum = 1299557910. The interpretation of the quartiles is that more than a quarter of movies lose money, and half make no profit at all. The box is small and sits near zero, but there are many large outliers above it. This shows that making money in movies is very risky and depends on a few hits.
 
 *Step d*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+movieslogprofits<-log(moviesprofits)
+mean(movies$log_profits)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+For the movies with a 0 profit it returns -Infinity, because log(0) goes to -infinity. For the movies with negative profit it returns NaN, because the log of a negative number does not exist. The log is defined only for positive numbers. The mean of log of profits return NaN. So the mean cannot be computed until these values are dealt with.
 
 *Step e*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+movieslogprofits[moviesprofits <= 0] <- NA
+mean(movies$log_profits, na.rm = TRUE)
+ggplot(movies, aes( y = log_profits)) + 
+  geom_boxplot() + 
+  labs(title = "Boxplot of log of movie profits",
+       x = "Movies with positive profits", y = "Log of profits")
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+After replacing the log of profits with NA for movies with negative or 0 profit, the mean log of profits is 17.33, which is calculated over the profitable movies. If we convert the mean is about 33.6 million. This boxplot is much more symmetric, compared with the boxplot in c). Now the box is visible and the median is in the middle. In c) the box was near to 0 and and there were many outilers at the top. Taking the log compresses the very large values, so the huge movies no longer dominate the plot. The downside of this exercise is that the movies with a loss or 0 profit are left out, so this plot describes only movies that were profitable.
 
 *Step f*
 
 ```{r}
 
-#WRITE YOUR CODE HERE
+ggplot(movies, aes(x = runtime, y = vote_average)) + 
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  labs(title = "Runtime vs. average vote of movies",
+       x = "Runtime (minutes)", y = "Average vote (0-10)")
+cor(moviesruntime,moviesvote_average)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The scatterplot shows a weak to moderate positive relationship between runtime and average vote, the correlation is equal to 0.36. Most of the movies last between 90 and 120 minutes and have a score between 5 and 7. The trend line slopes upward, which means movies shorter than 90 minutes score about 5.6 on average, while movies over 150 minutes score about 6.9. Longer movies tend to be rated better by the audience, although there is a lot of spread around the line. The audience might prefer longer movies because of the big budgets, better story and actors, while short movies have lower budgets.
+
 
 # Week 2 
 1 Is your dataset movies4.tsv the full population, or is it a sample of a larger population? If the latter, how would you describe the full population? \textbf{[4 points]}
@@ -189,6 +214,7 @@ c.  How trustworthy do you consider your conclusion to answer 2b? Use the term "
 *step a*
 
 ```{r}
+
 top_actor_summary <- movies %>%
   filter(!is.na(first_actor)) %>%
   count(first_actor, sort = TRUE)
@@ -238,6 +264,7 @@ print(bruce_stats)
 
 The conclusion is not trustworthy due to the very small sample size and extreme variance. 
 According to the law of large numbers, as a sample size becomes larger, the sample mean converges closer to the true population mean. In the filtered dataset, it is only possible to observe a sample size of 9 movies where Bruce Willis is listed as the "first_actor". Because the standard deviation ($245 million) is nearly as large as the sample mean ($255 million), individual blockbuster outliers impact the average heavily. While the sample mean is large enough that Bruce Willis' average likely remains above the overall dataset average ($82.7 million), 9 is far too small for the law of large numbers to ensure that this sample mean is an accurate estimate of his true career population average.
+
 
 3 For this question, you will assume that your data set is the full population. 
 
@@ -315,7 +342,6 @@ hist(sample_vars,
      xlab="Sample Variance of Profits(millions)"
      )
 
-
 ```
 
 **Your Answer:**
@@ -337,7 +363,6 @@ from one sample to the next—the standard deviation of those variances is huge.
 The main issue is how heavily right-skewed box office data is. Movies have extreme 
 outliers, like massive blockbusters or high-budget flops. So even though sample variance is technically an unbiased estimator on average, any single random sample of 25 movies is just too small to give you a trustworthy estimate of the true population variance.
 
-**Your answer here**
 
 # Week 3 
 
@@ -351,14 +376,13 @@ b. Now, assume that the variance of *runtime* amongst thriller movies in your da
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 thriller<-movies%>% 
   filter(genre=="Thriller")
 
 t1<-t.test(thriller$runtime,conf.level=0.99)
 
 print (t1$conf.int)
-
 
 ```
 
@@ -369,7 +393,7 @@ Write your formulated response here.
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 mean_runtime<-mean(thriller$runtime)
 sigma<-sd(thriller$runtime)
 n<-length(thriller$runtime)
@@ -381,6 +405,7 @@ LOW<-mean_runtime-error
 UP<-mean_runtime+error
 
 print(c(LOW,UP))
+
 ```
 
 **Your Answer:**
@@ -396,7 +421,7 @@ b. For the validity of your test in 2a, what assumption about the distribution o
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 s2<-var(thriller$runtime)
 h0<-500
 df<-length(thriller$runtime)-1
@@ -417,7 +442,7 @@ Write your formulated response here.
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 hist(thriller$runtime,
      main="Distribution of Thriller Runtime",
      xlab="Runtime")
@@ -438,7 +463,7 @@ d. Write an advice to settle the argument between Bob and Chantal. \textbf{[4 po
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
  movies<-movies%>%
   mutate(vote_average_rounded=floor(vote_average))
 
@@ -455,7 +480,7 @@ Write your formulated response here.
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 movies<-movies%>%
   mutate(profit=(revenue-budget))
 
@@ -477,7 +502,7 @@ Write your formulated response here.
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+
 mean_profits<-tapply(movies$profit,
                      movies$release_year,
                      mean,
