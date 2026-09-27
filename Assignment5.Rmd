@@ -388,7 +388,7 @@ print (t1$conf.int)
 
 **Your Answer:**
 
-Write your formulated response here.
+With the sample provided, there is a 99% confidence that the average runtime of thriller movies lies between 100.55 and 109.9
 
 *step b*
 
@@ -410,7 +410,7 @@ print(c(LOW,UP))
 
 **Your Answer:**
 
-Write your formulated response here.
+Under the given assumption, the 99% confidence interval for the mean runtime of thriller movies is 100.63 and 109.82 minutes. This confidence interval is narrower than the one from question 1a since the population variance is known. With a known population variance there is less uncertainty when estimating, so the normal distribution is used rather than the t distribution. 
 
 
 2
@@ -437,7 +437,10 @@ print(c(chi_low,chi_high))
 
 **Your Answer:**
 
-Write your formulated response here.
+The null hypothesis is H₀: σ² = 500
+The alternative hypothesis is H₁: σ² ≠ 500. 
+The test statistic is the calculated chi-square statistic, and the two critical values are given by the lower and upper critical values.The null hypothesis is rejected if the test statistic lies outside the two critical values. In this case, the test statistic is 84.9 and the two critical values are 87.21 and 146.57, so the test statistic is outside the critical region and we reject the null hypothesis. Therefore, given the significance level of 5% we can infer that there is sufficient statistical evidence to prove that the population variance of thriller movies runtime differs from 500. 
+
 
 *step b*
 
@@ -451,7 +454,7 @@ hist(thriller$runtime,
 
 **Your Answer:**
 
-Write your formulated response here.
+For the validity of the chi square test for a population variance, the assumption that needs to hold is that the variable is normally distributed. The histogram depicts the distribution of thriller movie runtimes. The distribution appears more or less normal, so the normality assumption is reasonably satisfied.9
 
 3. There is an argument going on in the movie studio. *Bob* claims that they should make higher-quality movies, as this will bring in more profits. *Chantal* disagrees. She tells Bob that mediocre movies bring in the most profits. You are asked to advise on who is right.
 
@@ -475,7 +478,7 @@ hist(movies$vote_average_rounded,
 
 **Your Answer:**
 
-Write your formulated response here.
+The variable vote_average_rounded was created by removing the decimals of the original vote average. The histogram depicts the distribution of these rounded ratings.
 
 *step b*
 
@@ -497,7 +500,7 @@ plot(mean_profits,
 
 **Your Answer:**
 
-Write your formulated response here.
+The scatter plot illustrates how much profit a film earns in each particular vote-average category. The most profitable category is the one with a rating of 8. Thus, based on the given data regarding films, the movies with this rating have the maximum average profit earned.
 
 *step c*
 
@@ -535,13 +538,13 @@ arrows(years,lower,
 
 **Your Answer:**
 
-Write your formulated response here.
+The chart depicts the average earnings of films for each year in the records while also showing the 95% confidence intervals. The dots indicate the calculated average earnings of films for each year, and the spikes reflect the uncertainty regarding those calculations. The width of the confidence intervals differs from year to year due to different quantities of films and their variability in different years.
 
 *step d*
 
 **Your Answer:**
 
-Write your formulated response here.
+The data suggests that average earnings change depending on the movie rating, where one category has the highest average earnings. However, this does not imply that movie quality influences the earnings since the relationship observed could be confounded by other factors like budget, popularity, type, actors, or the year of release. Thus, the results of this study can hardly indicate whether high-quality films or ones of mediocre quality earn the most. It is advisable for the company to consider the uncertainty in calculations and other factors before making conclusions.
 
 # Week 4 
 
