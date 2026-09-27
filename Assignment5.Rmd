@@ -141,6 +141,7 @@ The movie with the highest profit is The Avengers, with 1299557910, which is aro
 
 ```{r}
 
+movies$profits<-moviesprofits
 ggplot(movies, aes(y = profits / 1000000)) + 
   geom_boxplot() + 
   labs(title = "Boxplot of profits for the movies",
@@ -173,7 +174,7 @@ For the movies with a 0 profit it returns -Infinity, because log(0) goes to -inf
 movieslogprofits[moviesprofits <= 0] <- NA
 mean(movieslogprofits, na.rm = TRUE)
 
-
+movies$log_profits<-movieslogprofits
 ggplot(movies, aes( y = log_profits)) + 
   geom_boxplot() + 
   labs(title = "Boxplot of log of movie profits",
