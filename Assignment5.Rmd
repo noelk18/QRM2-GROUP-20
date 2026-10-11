@@ -556,6 +556,7 @@ The chart depicts the average earnings of films for each year in the records whi
 
 The data suggests that average earnings change depending on the movie rating, where one category has the highest average earnings. However, this does not imply that movie quality influences the earnings since the relationship observed could be confounded by other factors like budget, popularity, type, actors, or the year of release. Thus, the results of this study can hardly indicate whether high-quality films or ones of mediocre quality earn the most. It is advisable for the company to consider the uncertainty in calculations and other factors before making conclusions.
 
+
 # Week 4 
 
 1. There is another argument going on in the movie studio. *Bob* claims that production budgets are getting out of hand, and that the studio should focus on making cheaper movies. *Chantal* disagrees. She tells Bob that ``Every dollar we spend on movie production is more than offset by the increase in movie profits''. 
@@ -571,68 +572,76 @@ g. Who do you think is correct? Bob or Chantal? What would you advise the movie 
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$profit<-movies$revenue - movies$budget
+model1<-lm(profit~budget, data=movies)
+summary(model1)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+We estimated a linear regression of profit on budget, the summary is shown above.
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+coef(model1)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The estimated value of beta1 = 2.162. Meaning that on average, every additional 1$ spent on a movie's production budget is assosiated with an increase in profit of about 2.16$. Positive beta1 means the extra revenue more than covers the extra spending, which is in line with Chantal's claim that every dollar spent on production is more than offset by the increase in profits.
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+pt(23.75, df=806)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+H0: beta1≥0  H1: beta1<0, one sided test (left tailed), t=23.75, df=806.
+P-value = 1, which is far above the 5% significance level. We therefore do not reject H₀. There is no evidence that a higher budget lowers profit. If anything, the estimated effect is strongly positive, which is consistent with Chantal’s claim.
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$log_budget <- ifelse(movies$budget == 0, NA, log(movies$budget))
+movies$log_profit <- ifelse(movies$revenue == 0 | movies$budget == 0, NA, log(movies$profit))
+model2 <- lm(log_profit ~ log_budget, data = movies)
+summary(model2)
+
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+We created log_budget and log_profit, setting movies with a revenue or budget zero to NA. Movies with a negative profits also become NA. The log-log model was estimated on the remaining 369 movies; 439 observations were removed due to missing values.
 
 *step e*
 
 ```{r}
-#WRITE YOUR CODE HERE
+coef(model2)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The estimated value of beta1 is 0.893. Because both variables are in logs, beta1 is an elasticity: a 1% increase in a movie’s budget is associated with an increase in profit of about 0.89% on average.
 
 *step f*
 
 ```{r}
-#WRITE YOUR CODE HERE
+summary(model1)$r.squared
+summary(model2)$r.squared
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The log-log model has a higher R^2 (0.463 vs. 0.412), so it fits better. However, the two R^2 values are not fully comparable: the models explain different dependent variables (profit vs. log profit), and the log-log model uses only the 369 profitable movies instead of all 808.
 
 *step g*
 
@@ -643,7 +652,8 @@ Write your formulated response here.
 
 **Your Answer:**
 
-Write your formulated response here.
+The result supports Chantal. In the level-level model, each extra 1$ of budget is assosiated with 2.16$ more profit, and we found no evidence that higher budgets lower profit.The log log model also confirms positive relationship between budget and profit.Therefore, based on findings, we would advise the studio not to cut budgets and invest in higher-budget movies. However, the studio should be careful - the regression shows an association, not necessarily a causal effect.
+
 
 2
 
@@ -654,35 +664,51 @@ c. Now, have a close look at your data frame. Can you find any instances of male
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+gender_summary <- movies %>%
+  filter(!is.na(first_actor_gender),!is.na(log_budget)) %>%
+  group_by(first_actor_gender) %>%
+  summarise(mean_lb = mean(log_budget),
+            se = sd(log_budget)/sqrt(n())) %>%
+  mutate(lower = mean_lb -1.96*se,
+         upper = mean_lb +1.96*se)
+ggplot(gender_summary, aes(x=first_actor_gender, y= mean_lb)) + 
+  geom_point(size = 3)+
+  geom_errorbar(aes(ymin=lower, ymax=upper), width = 0.2) +
+  labs(x="Gender of first actor", y="Mean log budget",
+       title = "Mean log budget by gender of first actor (95% CI)")
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Movies with a male first actor have a higher mean budget - 16.89, than movies with female first actor - 16.38. 
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$male <- ifelse(movies$first_actor_gender == "male",1,0)
+model3 <- lm(log_budget ~ male, data = movies)
+summary (model3)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Beta1=0.508, p-value - 0.0028, so it is significantly different from zero at the 5% level. This means movies with a male first actor have, on average, about 66% higher budgets than movies with a female first actor. This matches 2a: beta1 is the gap between the two means in the plot, and both show a significant difference.
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies %>%
+  select(title,first_actor, first_actor_gender) %>%
+  View()
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Yes, some first actors are mislabeled.Cameron Diaz and Drew Barrymore are labeled male, while Robin Williams and Jamie Foxx are labeled female. Because of these mistakes, some movies end up in the wrong group, which makes the two groups look more similar. This pushes the coefficient in 2b toward zero, so the real budget gap between male and female leads is probably larger than 0.508.
+
 
 # Week 5
 
@@ -704,12 +730,11 @@ f. Estimate a model that is able to predict the revenue of this movie. Give its 
 mean_profit_month <- movies %>%
   group_by(release_month) %>%
   summarise(
-    mean_profit = mean(profits, na.rm = TRUE)
+    mean_profit = mean(profit, na.rm = TRUE)
   )
 
 ggplot(mean_profit_month,
-       aes(x = release_month,
-           y = mean_profit)) +
+       aes(x = release_month, y = mean_profit)) +
   geom_line() +
   geom_point() +
   labs(
@@ -733,17 +758,14 @@ movies$english <- ifelse(
   0
 )
 
-movies$log_profit <- log(movies$profits)
-movies$log_profit[movies$profits <= 0] <- NA
+movies$log_profit <- log(movies$profit)
+movies$log_profit[movies$profit <= 0] <- NA
 
 movies$log_budget <- log(movies$budget)
 movies$log_budget[movies$budget <= 0] <- NA
 
 model1 <- lm(
-  log_profit ~
-    log_budget +
-    english +
-    release_month,
+  log_profit ~ log_budget + english + release_month,
   data = movies
 )
 
