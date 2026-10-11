@@ -701,63 +701,156 @@ f. Estimate a model that is able to predict the revenue of this movie. Give its 
 *step a*
 
 ```{r}
-#WRITE YOUR CODE HERE
+mean_profit_month <- movies %>%
+  group_by(release_month) %>%
+  summarise(
+    mean_profit = mean(profits, na.rm = TRUE)
+  )
+
+ggplot(mean_profit_month,
+       aes(x = release_month,
+           y = mean_profit)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Mean Profit by Release Month",
+    x = "Release Month",
+    y = "Mean Profit"
+  )
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The scatter plot illustrates a variation average profits across release months, as they increase from the beginning of the year and reach a peak around month 6, before heavily declining, it is also noted that there's a small increase towards the end of the year. This all leads us to conclude that the month of release may have an effect on movie profits, as some months are more lucrative than others 
 
 *step b*
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$english <- ifelse(
+  movies$original_language == "en",
+  1,
+  0
+)
+
+movies$log_profit <- log(movies$profits)
+movies$log_profit[movies$profits <= 0] <- NA
+
+movies$log_budget <- log(movies$budget)
+movies$log_budget[movies$budget <= 0] <- NA
+
+model1 <- lm(
+  log_profit ~
+    log_budget +
+    english +
+    release_month,
+  data = movies
+)
+
+summary(model1)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The estimated model is: log(profits) = 1.661 + 0.836 log(budget) + 0.745(english) + 0.014(release month). 
+The Coefficient of log budget is 0.836, and since there is a relationship, a 1% increase in budget leads to a 0.836% increase in profits, and the coefficient is highly statistically significant
+The english coefficient is 0.745, which suggests that movies in the english language generally profit more than non english movies, however, it is worth noting that that coefficient is not statistically significant at 5%, p=0.1172
+The coefficient associated with the release month is 0.014, which illustrates that movies that are released one month later in the year are predicted to have 1.4% higher profits, however it is not statistically significant p=0.503
 
 *step c*
 
 ```{r}
-#WRITE YOUR CODE HERE
+coef(summary(model1))
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+H0: Release month = 0 
+H1: Release month ≠ 0
+
+The estimated coefficient for the release month is 0.0137, with a p value of 0.5029, and since the p value is greater than 0.05, we fail to reject the null hypothesis that the coefficient of the release month is 0, therefore there is insufficient evidence to indicate that the release month has a significant effect on movie profits
 
 *step d*
 
 ```{r}
-#WRITE YOUR CODE HERE
+model2 <- lm(
+  log_profit ~
+    log_budget +
+    english +
+    factor(release_month),
+  data = movies
+)
+
+summary(model2)
+
+anova(model1, model2)
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+The plot in part a does not give a reasonable assumption that the effect of the release month on profits is linear, as average points increase until around month 6, then decline afterwards, and rises again shortly before the end of the year. Therefore it would be more reasonable to treat each month as a categorical variable to allow each month to have a different effect on profits
+An F test was performed to see whether release months have an effect on profits, and produced a p value of 0.0308, which is smaller than 0.05, therefore we have enough statistical evidence to reject the null hypothesis that the release month has no impact on profits.
 
 *step e*
 
 ```{r}
-#WRITE YOUR CODE HERE
+month_data <- data.frame(
+  release_month = 1:12,
+  log_budget = mean(movies$log_budget, na.rm = TRUE),
+  english = 1
+)
+
+month_data$predicted <- predict(
+  model2,
+  newdata = month_data
+)
+
+month_data
 
 ```
 
 **Your Answer:**
 
-Write your formulated response here.
+Based on the flexible model, the highest predicted profit for movie releases occurs in month 10, therefore that would be the recommendation to the executives to maximize revenues. Although the plot in part a shows the peak around month 6, the regression model controls for other factors such as budget and language, and predicts higher profitability in month 10.
 
 *step f*
 
 
 ```{r}
-#WRITE YOUR CODE HERE
+movies$log_revenue <- log(movies$revenue)
+movies$log_revenue[movies$revenue <= 0] <- NA
 
+revenue_model <- lm(
+  log_revenue ~
+    log_budget +
+    english +
+    factor(genre) +
+    factor(release_month),
+  data = movies
+)
+
+new_movie <- data.frame(
+  log_budget = log(40000000),
+  english = 1,
+  genre = "Thriller",
+  release_month = 10
+)
+
+prediction <- predict(
+  revenue_model,
+  newdata = new_movie,
+  interval = "prediction",
+  level = 0.99
+)
+
+prediction
+
+exp(prediction)
 ```
 
+**Your Answer:**
+For a thriller movie in the english language and a budget of $40 million to be release in month 10, the model has predicted a revenue of approximately $74.9 million
+The 99% interval ranges from approximately $1.61 million to $3.49 billion, which is a significantly wide interval, reflecting the substantial uncertainty and variability in movie revenues. Although the model predicts a revenue of $74.9 million, the number can greatly vary depending on factors that are not captured by the model
