@@ -701,13 +701,12 @@ Beta1=0.508, p-value - 0.0028, so it is significantly different from zero at the
 ```{r}
 movies %>%
   select(title,first_actor, first_actor_gender) %>%
-  View()
-
+  head(10)
 ```
 
 **Your Answer:**
 
-Yes, some first actors are mislabeled.Cameron Diaz and Drew Barrymore are labeled male, while Robin Williams and Jamie Foxx are labeled female. Because of these mistakes, some movies end up in the wrong group, which makes the two groups look more similar. This pushes the coefficient in 2b toward zero, so the real budget gap between male and female leads is probably larger than 0.508.
+Yes, some first actors are mislabeled.Cameron Diaz and Drew Barrymore are labeled male, while Robin Williams and Jamie Foxx are labeled female. Because of these mistakes, some movies end up in the wrong group, which makes the two groups look more similar. This pushes the coefficient in 2b toward zero, so the real budget gap between male and female leads is probably larger than 0.508. For submission I added head(10) so only 10 rows appear in the knitted version and not all 798 rows. 
 
 
 # Week 5
